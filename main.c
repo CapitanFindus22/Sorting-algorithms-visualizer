@@ -1,66 +1,64 @@
-#include <SDL2/SDL.h>
-#include "Screen.h"
+#include <pthread.h>
 #include <stdlib.h>
+#include <unistd.h>
+
+#include "Screen.h"
 #include "Sort.h"
 
 int main(int argc, char **argv) {
 
-    Screen screen;
-    Screen *ptr = &screen;
-
-    SDL_Event PingStop;
+    Screen *ptr = (Screen*)malloc(sizeof(Screen));
 
     int width = 400;
-    int height = 400;
+    int height = 500;
     InitScreen(ptr,width,height);
 
-    int arr[width];
+    int *arr = (int*)malloc(sizeof(int)*width);
 
     for (size_t i = 0; i < width; i++)
     {
         arr[i] = rand() %(height-10);
+        drawLine(ptr,i,arr[i]);
+        SDL_Delay(5);
+
     }
-    
-    drawLines(ptr,arr,width,-1,-1);
 
-    //Selection sort
-    size_t i,j,t;
-    int min;
-    int temp = 0;
+    Arguments *arg;
 
-    while (SDL_PollEvent(&PingStop)) { 
+    arg = (Arguments*)malloc(sizeof(Arguments));
+    arg->array = arr;
+    arg->size = width;
 
-        for (i = 0; i < width-1; i++)
+    pthread_t thread_id;
+    pthread_create(&thread_id, NULL, SelectionSort, (void*)arg);
+    pthread_detach(thread_id);
+
+    while(1) {
+
+        while (SDL_PollEvent(&ptr->event))
         {
-            t = i;
-            min = arr[i];
-            for (j=i+1; j < width; j++)
+
+            switch (ptr->event.type)
             {
-                if(min > arr[j]) {
 
-                    t=j;
-                    min=arr[j];
-
-                }
-                SDL_Delay(0);
-                drawLines(ptr,arr,width,i,j);
+            case SDL_QUIT:
+                goto end;
             }
+        }
 
-            if(t != i) {
-            
-                temp = arr[i];
-                arr[i] = arr[t];
-                arr[t] = temp;
+        if(draw) {
 
-            }
+            drawLines(ptr,arr,width);
+            SDL_Delay(10);
+            draw = 0;
 
         }
 
-        break;
     }
-    
-    drawLines(ptr,arr,width,-1,-1);
-    SDL_Delay(50);
+
+    end:
+    free(arg);
+    free(arr);
     CloseScreen();
 
     return 0;

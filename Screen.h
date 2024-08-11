@@ -1,7 +1,8 @@
+#ifndef SCREEN
+#define SCREEN
+
 #include <SDL2/SDL.h>
-#include <math.h>
 #include <stdio.h>
-#include <stdbool.h>
 
 /// @brief Encapsulate a window
 typedef struct
@@ -20,7 +21,8 @@ void CloseScreen();
 
 // Draw functions
 void clear(Screen*);
-void drawLines(Screen*,int*,size_t,size_t,size_t);
+void drawLine(Screen*,int,int);
+void drawLines(Screen*,int*,size_t);
 
 /// @brief Initialize the library and create the screen and the renderer
 /// @param screen The screen to initialize
@@ -63,38 +65,31 @@ inline void clear(Screen *screen)
     SDL_RenderClear(screen->renderer);
 }
 
-void drawLines(Screen *screen,int* arr,size_t size, size_t red, size_t blue) {
+void drawLines(Screen *screen,int* arr,size_t size) {
 
     clear(screen);
 
     SDL_SetRenderDrawColor(screen->renderer,255,255,255,255);
 
-    bool cond = false;
-
     for (size_t i = 0; i < size; i++)
     {
 
-        if (i==red)
-        {
-            SDL_SetRenderDrawColor(screen->renderer,255,0,0,255);
-            cond = true;
-        }
-        
-        if (i==blue)
-        {
-            SDL_SetRenderDrawColor(screen->renderer,0,0,255,255);
-            cond = true;
-        }
-
         SDL_RenderDrawLine(screen->renderer,i,screen->height,i,screen->height-arr[i]);
-
-        if(cond) {
-            SDL_SetRenderDrawColor(screen->renderer,255,255,255,255);
-            cond = false;
-        }
     
     }
     
     SDL_RenderPresent(screen->renderer);
 
 }
+
+void drawLine(Screen *screen,int x,int y) {
+
+    SDL_SetRenderDrawColor(screen->renderer,255,255,255,255);
+
+    SDL_RenderDrawLine(screen->renderer,x,screen->height,x,screen->height-y);
+    
+    SDL_RenderPresent(screen->renderer);
+
+}
+
+#endif
