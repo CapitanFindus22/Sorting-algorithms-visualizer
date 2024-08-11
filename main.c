@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include "Screen.h"
 #include <stdlib.h>
+#include "Sort.h"
 
 int main(int argc, char **argv) {
 
