@@ -39,7 +39,6 @@ void *SelectionSort(void *args) {
         }
 
         draw = 1;
-
         while (draw){}
 
     }

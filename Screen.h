@@ -16,6 +16,7 @@ typedef struct
 } Screen;
 
 // Start and end functions
+void StartSDL();
 void InitScreen(Screen *, int, int);
 void CloseScreen();
 
@@ -24,12 +25,7 @@ void clear(Screen*);
 void drawLine(Screen*,int,int);
 void drawLines(Screen*,int*,size_t);
 
-/// @brief Initialize the library and create the screen and the renderer
-/// @param screen The screen to initialize
-/// @param width The width of the screen to create
-/// @param height The height of the screen to create
-inline void InitScreen(Screen *screen, int width, int height)
-{
+inline void StartSDL() {
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
@@ -37,6 +33,15 @@ inline void InitScreen(Screen *screen, int width, int height)
         exit(-1);
     }
 
+    return;
+}
+
+/// @brief Initialize the library and create the screen and the renderer
+/// @param screen The screen to initialize
+/// @param width The width of the screen to create
+/// @param height The height of the screen to create
+inline void InitScreen(Screen *screen, int width, int height)
+{
     SDL_CreateWindowAndRenderer(width, height, 0, &screen->window, &screen->renderer);
 
     if (screen->window == NULL || screen->renderer == NULL)

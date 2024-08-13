@@ -7,18 +7,21 @@
 
 int main(int argc, char **argv) {
 
-    Screen *ptr = (Screen*)malloc(sizeof(Screen));
+    const int width = 200;
+    const int height = 200;
 
-    int width = 400;
-    int height = 500;
-    InitScreen(ptr,width,height);
+    Screen *sort_vis = (Screen*)malloc(sizeof(Screen));
+    
+    StartSDL();
 
+    InitScreen(sort_vis,width,height);
+    
     int *arr = (int*)malloc(sizeof(int)*width);
 
     for (size_t i = 0; i < width; i++)
     {
         arr[i] = rand() %(height-10);
-        drawLine(ptr,i,arr[i]);
+        drawLine(sort_vis,i,arr[i]);
         SDL_Delay(5);
 
     }
@@ -35,10 +38,10 @@ int main(int argc, char **argv) {
 
     while(1) {
 
-        while (SDL_PollEvent(&ptr->event))
+        while (SDL_PollEvent(&sort_vis->event))
         {
 
-            switch (ptr->event.type)
+            switch (sort_vis->event.type)
             {
 
             case SDL_QUIT:
@@ -48,7 +51,7 @@ int main(int argc, char **argv) {
 
         if(draw) {
 
-            drawLines(ptr,arr,width);
+            drawLines(sort_vis,arr,width);
             SDL_Delay(10);
             draw = 0;
 
