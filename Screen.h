@@ -4,7 +4,7 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 
-/// @brief Encapsulate a window
+/// Encapsulation of a window
 typedef struct
 {
 
@@ -12,20 +12,25 @@ typedef struct
     SDL_Renderer *renderer;
     SDL_Event event;
     int height;
+    int width;
 
-} Screen;
+} Window;
 
 // Start and end functions
 void StartSDL();
-void InitScreen(Screen *, int, int);
-void CloseScreen();
+void CloseSDL();
+
+// Create the window
+void CreateWindow(Window *, int, int);
 
 // Draw functions
-void clear(Screen*);
-void drawLine(Screen*,int,int);
-void drawLines(Screen*,int*,size_t);
+void clear(Window *);
+void drawLine(Window *, int, int);
+void drawLines(Window *, int *);
 
-inline void StartSDL() {
+// Start the library
+inline void StartSDL()
+{
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
@@ -36,65 +41,62 @@ inline void StartSDL() {
     return;
 }
 
-/// @brief Initialize the library and create the screen and the renderer
-/// @param screen The screen to initialize
-/// @param width The width of the screen to create
-/// @param height The height of the screen to create
-inline void InitScreen(Screen *screen, int width, int height)
+// Create a new window
+inline void CreateWindow(Window *window, int width, int height)
 {
-    SDL_CreateWindowAndRenderer(width, height, 0, &screen->window, &screen->renderer);
+    SDL_CreateWindowAndRenderer(width, height, 0, &window->window, &window->renderer);
 
-    if (screen->window == NULL || screen->renderer == NULL)
+    if (window->window == NULL || window->renderer == NULL)
     {
         fprintf(stderr, "%s\n", SDL_GetError());
         exit(-1);
     }
 
-    screen->height = height;
-
+    window->height = height;
+    window->width = width;
 }
 
-/// @brief Close the library
-inline void CloseScreen()
+// Close the library
+inline void CloseSDL()
 {
 
     SDL_Quit();
 }
 
-/// @brief Clear the screen
-/// @param screen The screen to clear
-inline void clear(Screen *screen)
+// Clear the Window
+inline void clear(Window *window)
 {
 
-    SDL_SetRenderDrawColor(screen->renderer, 0, 0, 0, 255);
-    SDL_RenderClear(screen->renderer);
+    SDL_SetRenderDrawColor(window->renderer, 0, 0, 0, 255);
+    SDL_RenderClear(window->renderer);
 }
 
-void drawLines(Screen *screen,int* arr,size_t size) {
+// Draw the lines in arr
+void drawLines(Window *window, int *arr)
+{
 
-    clear(screen);
+    clear(window);
 
-    SDL_SetRenderDrawColor(screen->renderer,255,255,255,255);
+    SDL_SetRenderDrawColor(window->renderer, 255, 255, 255, 255);
 
-    for (size_t i = 0; i < size; i++)
+    for (size_t i = 0; i < window->width; i++)
     {
 
-        SDL_RenderDrawLine(screen->renderer,i,screen->height,i,screen->height-arr[i]);
-    
+        SDL_RenderDrawLine(window->renderer, i, window->height, i, window->height - arr[i]);
     }
-    
-    SDL_RenderPresent(screen->renderer);
 
+    SDL_RenderPresent(window->renderer);
 }
 
-void drawLine(Screen *screen,int x,int y) {
+// Draw a line from the bottom to the pixel equal to the value of array[x]
+void drawLine(Window *window, int x, int y)
+{
 
-    SDL_SetRenderDrawColor(screen->renderer,255,255,255,255);
+    SDL_SetRenderDrawColor(window->renderer, 255, 255, 255, 255);
 
-    SDL_RenderDrawLine(screen->renderer,x,screen->height,x,screen->height-y);
-    
-    SDL_RenderPresent(screen->renderer);
+    SDL_RenderDrawLine(window->renderer, x, window->height, x, window->height - y);
 
+    SDL_RenderPresent(window->renderer);
 }
 
 #endif

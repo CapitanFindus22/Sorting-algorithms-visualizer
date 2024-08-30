@@ -5,39 +5,46 @@
 #include "Screen.h"
 #include "Sort.h"
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
 
-    const int width = 200;
-    const int height = 200;
+    // Window size
+    const int width = 1500;
+    const int height = 800;
 
-    Screen *sort_vis = (Screen*)malloc(sizeof(Screen));
-    
+    // Initialize library and create window
     StartSDL();
+    Window *sort_vis = (Window *)malloc(sizeof(Window));
+    CreateWindow(sort_vis, width, height);
 
-    InitScreen(sort_vis,width,height);
-    
-    int *arr = (int*)malloc(sizeof(int)*width);
-
+    // Create a random array
+    int *arr = (int *)malloc(sizeof(int) * width);
     for (size_t i = 0; i < width; i++)
     {
-        arr[i] = rand() %(height-10);
-        drawLine(sort_vis,i,arr[i]);
-        SDL_Delay(5);
-
+        arr[i] = rand() % (height - 10);
+        drawLine(sort_vis, i, arr[i]);
     }
 
+    // Struct to pass the array to the thread
     Arguments *arg;
-
-    arg = (Arguments*)malloc(sizeof(Arguments));
+    arg = (Arguments *)malloc(sizeof(Arguments));
     arg->array = arr;
     arg->size = width;
 
+    // The sorting function to use
+    void *(*Sortfunction)(void *);
+    Sortfunction = SelectionSort;
+
+    // Create the thread and make it "indipendent"
     pthread_t thread_id;
-    pthread_create(&thread_id, NULL, SelectionSort, (void*)arg);
+    pthread_create(&thread_id, NULL, Sortfunction, (void *)arg);
     pthread_detach(thread_id);
 
-    while(1) {
+    // Display loop
+    while (1)
+    {
 
+        // Close on X pressed
         while (SDL_PollEvent(&sort_vis->event))
         {
 
@@ -49,20 +56,23 @@ int main(int argc, char **argv) {
             }
         }
 
-        if(draw) {
+        // If the array has changed draw the differences
+        if (draw)
+        {
 
-            drawLines(sort_vis,arr,width);
-            SDL_Delay(10);
-            draw = 0;
-
+            drawLines(sort_vis, arr);
+            draw = false;
         }
-
     }
 
-    end:
+end:
+
+    // Free the memory
     free(arg);
     free(arr);
-    CloseScreen();
+
+    // Close the library
+    CloseSDL();
 
     return 0;
 }
