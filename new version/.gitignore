@@ -1,0 +1,16 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/new-version
+new-version.so
+new-version.dylib
+new-version.dll
+new-version.a
+new-version.lib
+new-version-test-*
+*.exe
+*.pdb
+*.o
+*.obj
+*.lst
