@@ -7,7 +7,10 @@ void main()
 
 	arr ~= [2,2,2];
 
-	printf("%d\n",arr[1]);
+	foreach (byte key; arr)
+	{
+		printf("%d\n",key);
+	}
 
 	writeln("Edit source/app.d to start your project.");
 }
