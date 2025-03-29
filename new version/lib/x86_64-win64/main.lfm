@@ -1,0 +1,95 @@
+object Visualizer: TVisualizer
+  Left = 2120
+  Height = 547
+  Top = 834
+  Width = 1000
+  BorderStyle = bsDialog
+  Caption = 'Visualizer'
+  ClientHeight = 547
+  ClientWidth = 1000
+  LCLVersion = '3.8.0.0'
+  object StartButton: TButton
+    Left = 616
+    Height = 57
+    Top = 480
+    Width = 376
+    Caption = 'Ordina'
+    TabOrder = 0
+    OnClick = StartButtonClick
+  end
+  object DimArray: TTrackBar
+    Left = 616
+    Height = 40
+    Top = 360
+    Width = 376
+    Max = 5000
+    Min = 10
+    Position = 10
+    SelEnd = 5000
+    SelStart = 10
+    TabOrder = 1
+  end
+  object AlgList: TRadioGroup
+    Left = 8
+    Height = 184
+    Top = 360
+    Width = 600
+    AutoFill = True
+    Caption = 'Scegli l''algoritmo da usare'
+    ChildSizing.LeftRightSpacing = 6
+    ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+    ChildSizing.EnlargeVertical = crsHomogenousChildResize
+    ChildSizing.ShrinkHorizontal = crsScaleChilds
+    ChildSizing.ShrinkVertical = crsScaleChilds
+    ChildSizing.Layout = cclLeftToRightThenTopToBottom
+    ChildSizing.ControlsPerLine = 3
+    ClientHeight = 164
+    ClientWidth = 596
+    Color = clSilver
+    Columns = 3
+    ItemIndex = 0
+    Items.Strings = (
+      'Insertion Sort'
+      'Selection Sort'
+      'Bubble Sort'
+      'Merge Sort'
+    )
+    ParentBackground = False
+    ParentColor = False
+    TabOrder = 2
+  end
+  object Generate: TButton
+    Left = 616
+    Height = 65
+    Top = 408
+    Width = 376
+    Caption = 'Genera array casuale'
+    TabOrder = 3
+    OnClick = GenerateClick
+  end
+  object Chart: TChart
+    Left = 8
+    Height = 352
+    Top = 8
+    Width = 984
+    AxisList = <    
+      item
+        Marks.LabelBrush.Style = bsClear
+        Minors = <>
+        Title.LabelFont.Orientation = 900
+        Title.LabelBrush.Style = bsClear
+      end    
+      item
+        Alignment = calBottom
+        Marks.LabelBrush.Style = bsClear
+        Minors = <>
+        Title.LabelBrush.Style = bsClear
+      end>
+    Title.Text.Strings = (
+      'TAChart'
+    )
+    object ArrDisp: TBarSeries
+      BarBrush.Color = clRed
+    end
+  end
+end
