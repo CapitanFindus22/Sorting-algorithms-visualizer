@@ -1,11 +1,11 @@
 object Visualizer: TVisualizer
-  Left = 2120
-  Height = 547
-  Top = 834
+  Left = 2110
+  Height = 542
+  Top = 755
   Width = 1000
   BorderStyle = bsDialog
   Caption = 'Visualizer'
-  ClientHeight = 547
+  ClientHeight = 542
   ClientWidth = 1000
   LCLVersion = '3.8.0.0'
   object StartButton: TButton
@@ -31,7 +31,7 @@ object Visualizer: TVisualizer
   end
   object AlgList: TRadioGroup
     Left = 8
-    Height = 184
+    Height = 177
     Top = 360
     Width = 600
     AutoFill = True
@@ -43,7 +43,7 @@ object Visualizer: TVisualizer
     ChildSizing.ShrinkVertical = crsScaleChilds
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 3
-    ClientHeight = 164
+    ClientHeight = 157
     ClientWidth = 596
     Color = clSilver
     Columns = 3
@@ -52,7 +52,12 @@ object Visualizer: TVisualizer
       'Insertion Sort'
       'Selection Sort'
       'Bubble Sort'
+      'Quick Sort'
       'Merge Sort'
+      'Gnome Sort'
+      'Comb Sort'
+      'Trippel Sort'
+      'Pancake Sort'
     )
     ParentBackground = False
     ParentColor = False
